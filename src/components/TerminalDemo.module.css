@@ -1,0 +1,81 @@
+/*
+ * Hero terminal: panel depth + **green-only** atmosphere (no indigo).
+ * — Wide floor shadow + light green floor tint (not a point-source orb)
+ * — Subtle green outer haze on the card itself
+ */
+
+.wrap {
+	position: relative;
+	width: 100%;
+	min-width: 0;
+	isolation: isolate;
+}
+
+/* Full-width underlight: dark + whisper of brand green, rectangular */
+.wrap::before {
+	content: "";
+	position: absolute;
+	z-index: 0;
+	left: 2%;
+	right: 2%;
+	bottom: -20px;
+	height: 42%;
+	pointer-events: none;
+	background:
+		linear-gradient(to top, rgba(22, 163, 74, 0.09) 0%, transparent 32%),
+		linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 88%);
+	border-radius: 0 0 22px 22px;
+	filter: blur(22px);
+	opacity: 0.7;
+}
+
+.wrap :global(.terminal) {
+	position: relative;
+	z-index: 1;
+	/* Slightly lifted off pure #000 for separation from page bg */
+	background: linear-gradient(180deg, #101014 0%, #08080a 48%, #000 100%);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	/* One subtle product-green cue: bottom edge only (no surround bloom) */
+	border-bottom-color: rgba(74, 222, 128, 0.18);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	/* Elevation: contact + diffuse, all box-shaped */
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.09) inset,
+		0 0 0 1px rgba(0, 0, 0, 0.5),
+		0 2px 4px -1px rgba(0, 0, 0, 0.5),
+		0 18px 44px -10px rgba(0, 0, 0, 0.75),
+		0 40px 80px -24px rgba(0, 0, 0, 0.55);
+	transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.wrap:hover::before {
+		opacity: 0.78;
+	}
+	.wrap:hover :global(.terminal) {
+		border-color: rgba(255, 255, 255, 0.13);
+		border-bottom-color: rgba(74, 222, 128, 0.3);
+		box-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.1) inset,
+			0 0 0 1px rgba(0, 0, 0, 0.45),
+			0 2px 6px -1px rgba(0, 0, 0, 0.55),
+			0 24px 52px -10px rgba(0, 0, 0, 0.85),
+			0 48px 88px -22px rgba(0, 0, 0, 0.6),
+			0 0 56px -6px rgba(74, 222, 128, 0.14),
+			0 0 1px 0 rgba(74, 222, 128, 0.22);
+		transform: translateY(-2px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wrap::before {
+		filter: blur(16px);
+	}
+	.wrap :global(.terminal) {
+		transition: none;
+	}
+	.wrap:hover :global(.terminal) {
+		transform: none;
+	}
+}
