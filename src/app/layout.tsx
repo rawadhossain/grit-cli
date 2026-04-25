@@ -33,6 +33,9 @@ export const metadata: Metadata = {
 		siteName: "grít",
 		type: "website",
 	},
+	icons: {
+		icon: "/icon.svg",
+	},
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
