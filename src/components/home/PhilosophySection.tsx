@@ -1,52 +1,77 @@
 export default function PhilosophySection() {
-  return (
-    <section className="lp-section" id="friction" aria-labelledby="friction-heading">
-      <div className="container">
-        <div className="phil2-statement reveal">
-          <div className="lp-kicker" style={{ justifyContent: 'center', display: 'inline-flex' }}>
-            <span className="lp-dot" aria-hidden="true" />
-            Purposeful friction
-          </div>
-          <h2 className="phil2-headline" id="friction-heading">
-            Most tools optimize for speed.
-            <br />
-            <span className="phil2-accent">grít optimizes for clarity.</span>
-          </h2>
-          <p className="phil2-sub">
-            Thoughtless commits compound into unmaintainable systems. A 30-second pause at the
-            right moment changes what happens months later.
-          </p>
-        </div>
+	return (
+		<section className="lp-section" id="friction" aria-labelledby="friction-heading">
+			<div className="container">
+				<div className="phil2-statement reveal">
+					<div
+						className="lp-kicker"
+						style={{ justifyContent: "center", display: "inline-flex" }}
+					>
+						<span className="lp-dot" aria-hidden="true" />
+						Design Philosophy
+					</div>
+					<h2 className="phil2-headline" id="friction-heading">
+						Stop avoiding friction.
+						<br />
+						<span className="phil2-accent">Start embracing it.</span>
+					</h2>
+					<p className="phil2-sub">
+						As engineers, we’re obsessed with speed. We automate everything to reach
+						zero friction which often leads to zero reflection. grít turns the "moments
+						of resistance" into your most valuable creative signals.
+					</p>
+				</div>
 
-        <div className="phil2-grid">
-          <div className="phil2-card reveal">
-            <span className="phil2-num">01</span>
-            <h3>Pause at friction</h3>
-            <p>
-              grít intercepts the high-signal moments — commits, pastes, reverts, rabbit holes — not
-              constant interruption.
-            </p>
-          </div>
+				<div className="phil2-grid">
+					<div className="phil2-card reveal">
+						<div className="phil2-card-head">
+							<span className="phil2-num">01</span>
+							<span className="phil2-badge">Cognitive</span>
+						</div>
+						<h3>Capture the struggle</h3>
+						<p>
+							The moment you hesitate is the moment you're actually learning. grít
+							captures the "why" behind the hard decisions before the context
+							disappears into the void.
+						</p>
+					</div>
 
-          <div className="phil2-card reveal">
-            <span className="phil2-num">02</span>
-            <h3>Reflect in seconds</h3>
-            <p>
-              One question. One answer. Logged locally and searchable — no dashboard, no cloud, no
-              account.
-            </p>
-          </div>
+					<div className="phil2-card reveal">
+						<div className="phil2-card-head">
+							<span className="phil2-num">02</span>
+							<span className="phil2-badge">Mechanical</span>
+						</div>
+						<h3>Purposeful Pause</h3>
+						<p>
+							A deliberate prompt after a large AI paste or a 40-minute rabbit hole
+							isn't a hurdle — it's a guardrail that ensures your codebase remains an
+							intentional investment.
+						</p>
+					</div>
 
-          <div className="phil2-card reveal">
-            <span className="phil2-num">03</span>
-            <h3>Grow over time</h3>
-            <p>
-              A private engineering journal that builds itself automatically through your everyday
-              workflow.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+					<div className="phil2-card reveal">
+						<div className="phil2-card-head">
+							<span className="phil2-num">03</span>
+							<span className="phil2-badge">Social</span>
+						</div>
+						<h3>Audit Trail of Thought</h3>
+						<p>
+							Commit messages document <em>what</em> changed. grít documents{" "}
+							<em>what you were thinking</em>. Build a searchable timeline of your
+							evolution as an engineer.
+						</p>
+					</div>
+				</div>
+				<div className="phil2-quotes reveal">
+					<blockquote className="phil2-quote">
+						"The best time to document a decision is the moment you're making it."
+					</blockquote>
+					<blockquote className="phil2-quote">
+						"Friction at the right moment is the difference between a commit message and
+						an audit trail."
+					</blockquote>
+				</div>
+			</div>
+		</section>
+	);
 }
