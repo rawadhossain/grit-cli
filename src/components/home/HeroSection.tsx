@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import HeroInstallDropdown from "@/components/home/HeroInstallDropdown";
 import TerminalDemo from "@/components/TerminalDemo";
 
 export default function HeroSection() {
@@ -125,28 +126,7 @@ export default function HeroSection() {
 						</div>
 
 						<div className="hero-v2-actions">
-							<a
-								href="/docs#installation"
-								className="hero-v2-btn hero-v2-btn--primary"
-								id="hero-install"
-							>
-								<svg
-									width="18"
-									height="18"
-									viewBox="0 0 18 18"
-									fill="none"
-									aria-hidden="true"
-								>
-									<path
-										d="M9 3V12M9 12L6 9M9 12L12 9M3 15H15"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-								<span>Install grít</span>
-							</a>
+							<HeroInstallDropdown />
 							<a href="/docs" className="hero-v2-btn hero-v2-btn--ghost">
 								<span>Read the docs</span>
 								<svg
