@@ -119,15 +119,13 @@ npm start
 | **Global styles**             | [`src/app/globals.css`](./src/app/globals.css)                                                                           |
 | **App shell & home**          | [`src/app/layout.tsx`](./src/app/layout.tsx), [`src/app/page.tsx`](./src/app/page.tsx)                                   |
 
-Site logo in the app is defined in [`src/app/icon.svg`](./src/app/icon.svg) (this README uses the same asset).
-
 When CLI-facing docs change, update **`docs.md`** here so the site remains the place users trust.
 
 ---
 
 ## 🛠️ CLI — separate repository
 
-- **Install & use Grít** → [github.com/alchemistreturns/grit](https://github.com/alchemistreturns/grit) and [`mainprojectreadme.md`](./mainprojectreadme.md) in this repo.
+- **Install & use Grít** → [github.com/alchemistreturns/grit](https://github.com/alchemistreturns/grit).
 - This website repo ships **only** the Next.js app: discovery, narrative, and documentation in the browser.
 
 ---
