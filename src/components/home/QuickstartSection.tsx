@@ -1,5 +1,3 @@
-import HomeSectionScenery from '@/components/home/HomeSectionScenery';
-
 const STEPS = [
   {
     num: '01',
@@ -79,8 +77,7 @@ function renderQuickstartLine(line: string) {
 
 export default function QuickstartSection() {
   return (
-    <section className="lp-section home-with-scenery" id="quickstart" aria-labelledby="qs-heading">
-      <HomeSectionScenery variant="emerald" />
+    <section className="lp-section" id="quickstart" aria-labelledby="qs-heading">
       <div className="container">
         <header className="lp-head">
           <div className="reveal">

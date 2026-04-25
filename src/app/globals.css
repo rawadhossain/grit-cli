@@ -383,34 +383,51 @@ pre {
    HOME SECTIONS
    ════════════════════════════════════════════════════════════ */
 
-/* ── SECTION SCENERY (hero-style grid + orbs, below the fold) ─ */
-.home-with-scenery {
+/* One shared backdrop: Pain through Star CTA (hero keeps its own layer). */
+.home-landing-continuum {
 	position: relative;
 	isolation: isolate;
-	overflow: hidden;
 }
-.home-with-scenery > *:not(.home-scenery) {
-	position: relative;
-	z-index: 1;
-}
-.home-scenery {
+/* Backdrop: first child; sections stack above it. */
+.home-landing-continuum > .home-continuum {
 	position: absolute;
 	inset: 0;
 	z-index: 0;
 	pointer-events: none;
 	overflow: hidden;
 }
-.home-scenery__grid {
+.home-landing-continuum > section {
+	position: relative;
+	z-index: 1;
+}
+.home-continuum__grid {
 	position: absolute;
 	inset: 0;
 	background-size: 44px 44px;
 	background-image:
-		linear-gradient(to right, rgba(74, 222, 128, 0.034) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(74, 222, 128, 0.034) 1px, transparent 1px);
-	mask-image: radial-gradient(ellipse 96% 88% at 50% 38%, black 0%, transparent 70%);
-	-webkit-mask-image: radial-gradient(ellipse 96% 88% at 50% 38%, black 0%, transparent 70%);
-	opacity: 0.88;
-	animation: homeSceneryGridDrift 32s ease-in-out infinite;
+		linear-gradient(to right, rgba(74, 222, 128, 0.036) 1px, transparent 1px),
+		linear-gradient(to bottom, rgba(74, 222, 128, 0.03) 1px, transparent 1px);
+	/* One long vertical mask for the full scroll strip — not re-centered on every section. */
+	mask-image: linear-gradient(
+		180deg,
+		transparent 0%,
+		rgb(0 0 0 / 0.55) 0.4rem,
+		#000 1.5rem,
+		#000 calc(100% - 1.5rem),
+		rgb(0 0 0 / 0.55) calc(100% - 0.4rem),
+		transparent 100%
+	);
+	-webkit-mask-image: linear-gradient(
+		180deg,
+		transparent 0%,
+		rgb(0 0 0 / 0.55) 0.4rem,
+		#000 1.5rem,
+		#000 calc(100% - 1.5rem),
+		rgb(0 0 0 / 0.55) calc(100% - 0.4rem),
+		transparent 100%
+	);
+	opacity: 0.9;
+	animation: homeSceneryGridDrift 36s ease-in-out infinite;
 }
 @keyframes homeSceneryGridDrift {
 	0%,
@@ -421,84 +438,40 @@ pre {
 		transform: translateY(-8px) scale(1.01);
 	}
 }
-.home-scenery__orb {
+.home-continuum__orb {
 	position: absolute;
 	border-radius: 50%;
 	pointer-events: none;
 	filter: blur(100px);
-	opacity: 0.5;
+	opacity: 0.48;
 }
 @media (max-width: 640px) {
-	.home-scenery__orb {
+	.home-continuum__orb {
 		filter: blur(72px);
 		opacity: 0.4;
 	}
 }
-.home-scenery__orb--1 {
-	width: min(440px, 75vw);
-	height: min(440px, 75vw);
-	top: -14%;
-	left: -10%;
+.home-continuum__orb--1 {
+	width: min(500px, 80vw);
+	height: min(500px, 80vw);
+	top: 6%;
+	left: -12%;
+	background: radial-gradient(circle, rgba(74, 222, 128, 0.14) 0%, transparent 72%);
 }
-.home-scenery__orb--2 {
-	width: min(380px, 65vw);
-	height: min(380px, 65vw);
-	bottom: -18%;
-	right: -12%;
-}
-/* Variants: alternate mood while staying on-brand */
-.home-scenery--emerald .home-scenery__grid {
-	background-image:
-		linear-gradient(to right, rgba(74, 222, 128, 0.038) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(74, 222, 128, 0.03) 1px, transparent 1px);
-}
-.home-scenery--emerald .home-scenery__orb--1 {
-	background: radial-gradient(circle, rgba(74, 222, 128, 0.16) 0%, transparent 72%);
-}
-.home-scenery--emerald .home-scenery__orb--2 {
-	background: radial-gradient(circle, rgba(59, 130, 246, 0.11) 0%, transparent 72%);
-}
-.home-scenery--sapphire .home-scenery__grid {
-	background-image:
-		linear-gradient(to right, rgba(59, 130, 246, 0.045) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(74, 222, 128, 0.028) 1px, transparent 1px);
-}
-.home-scenery--sapphire .home-scenery__orb--1 {
-	background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 72%);
-}
-.home-scenery--sapphire .home-scenery__orb--2 {
-	background: radial-gradient(circle, rgba(74, 222, 128, 0.1) 0%, transparent 72%);
-}
-.home-scenery--amethyst .home-scenery__grid {
-	background-image:
-		linear-gradient(to right, rgba(96, 165, 250, 0.04) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
-	opacity: 0.82;
-}
-.home-scenery--amethyst .home-scenery__orb--1 {
-	background: radial-gradient(circle, rgba(192, 132, 252, 0.12) 0%, transparent 75%);
-}
-.home-scenery--amethyst .home-scenery__orb--2 {
-	background: radial-gradient(circle, rgba(74, 222, 128, 0.1) 0%, transparent 75%);
-}
-.home-scenery--ember .home-scenery__grid {
-	background-image:
-		linear-gradient(to right, rgba(251, 191, 36, 0.05) 1px, transparent 1px),
-		linear-gradient(to bottom, rgba(74, 222, 128, 0.032) 1px, transparent 1px);
-}
-.home-scenery--ember .home-scenery__orb--1 {
-	background: radial-gradient(circle, rgba(74, 222, 128, 0.12) 0%, transparent 75%);
-}
-.home-scenery--ember .home-scenery__orb--2 {
-	background: radial-gradient(circle, rgba(251, 191, 36, 0.1) 0%, transparent 75%);
+.home-continuum__orb--2 {
+	width: min(480px, 75vw);
+	height: min(480px, 75vw);
+	bottom: 4%;
+	right: -14%;
+	background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 72%);
 }
 @media (prefers-reduced-motion: reduce) {
-	.home-scenery__grid {
+	.home-continuum__grid {
 		animation: none;
 	}
 }
-/* Keep Pain section readable: slightly lift cards over any bleed */
-.pain-v2.home-with-scenery .pain-v2-card {
+/* Keep Pain cards readable over the shared glow. */
+.home-landing-continuum .pain-v2 .pain-v2-card {
 	backdrop-filter: blur(8px);
 }
 
@@ -506,23 +479,6 @@ pre {
 .lp-section {
 	position: relative;
 	padding: 4.5rem 0;
-}
-/* Subtle gradient separator between consecutive sections */
-.lp-section + .lp-section::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 10%;
-	right: 10%;
-	height: 1px;
-	background: linear-gradient(
-		to right,
-		transparent,
-		rgba(255, 255, 255, 0.05) 40%,
-		rgba(255, 255, 255, 0.05) 60%,
-		transparent
-	);
-	pointer-events: none;
 }
 /* These classes now just serve as semantic hooks; backgrounds removed for seamless page */
 .lp-section--muted {

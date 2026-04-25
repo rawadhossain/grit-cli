@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import HomeContinuumBackdrop from "@/components/home/HomeContinuumBackdrop";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import HomeClient from "./HomeClient";
@@ -28,15 +29,19 @@ export default function HomePage() {
 	return (
 		<>
 			<NavBar />
-
-			<HeroSection />
-			<PainSection items={PAIN} />
-			<PhilosophySection />
-			<HowItWorksSection steps={HOW_STEPS} />
-			<FeaturesSection items={FEATURES} />
-			<SignalsSection items={SIGNALS} />
-			<QuickstartSection />
-			<StarCtaSection />
+			<main id="content">
+				<HeroSection />
+				<div className="home-landing-continuum">
+					<HomeContinuumBackdrop />
+					<PainSection items={PAIN} />
+					<PhilosophySection />
+					<HowItWorksSection steps={HOW_STEPS} />
+					<FeaturesSection items={FEATURES} />
+					<SignalsSection items={SIGNALS} />
+					<QuickstartSection />
+					<StarCtaSection />
+				</div>
+			</main>
 
 			<Footer />
 			<HomeClient />

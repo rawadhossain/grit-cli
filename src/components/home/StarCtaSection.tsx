@@ -1,13 +1,6 @@
-import HomeSectionScenery from "@/components/home/HomeSectionScenery";
-
 export default function StarCtaSection() {
 	return (
-		<section
-			className="lp-section lp-section--bordered home-with-scenery"
-			id="star-cta"
-			aria-labelledby="star-heading"
-		>
-			<HomeSectionScenery variant="ember" />
+		<section className="lp-section" id="star-cta" aria-labelledby="star-heading">
 			<div className="container">
 				<div className="ctaShell reveal">
 					<div className="ctaInner">

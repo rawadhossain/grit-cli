@@ -1,12 +1,10 @@
 import type { PAIN } from '@/content/homeContent';
-import HomeSectionScenery from '@/components/home/HomeSectionScenery';
 
 type PainItem = (typeof PAIN)[number];
 
 export default function PainSection({ items }: { items: readonly PainItem[] }) {
   return (
-    <section className="pain-v2 home-with-scenery" id="why" aria-labelledby="pain-heading">
-      <HomeSectionScenery variant="emerald" />
+    <section className="pain-v2" id="why" aria-labelledby="pain-heading">
       <div className="container">
         <header className="pain-v2-header reveal">
           <div className="pain-v2-kicker">

@@ -1,12 +1,10 @@
 import type { SIGNALS } from '@/content/homeContent';
-import HomeSectionScenery from '@/components/home/HomeSectionScenery';
 
 type Signal = (typeof SIGNALS)[number];
 
 export default function SignalsSection({ items }: { items: readonly Signal[] }) {
   return (
-    <section className="lp-section home-with-scenery" id="signals" aria-labelledby="signals-heading">
-      <HomeSectionScenery variant="sapphire" />
+    <section className="lp-section" id="signals" aria-labelledby="signals-heading">
       <div className="container">
         <header className="lp-head">
           <div className="reveal">

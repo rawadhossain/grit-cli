@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import type { HOW_STEPS } from '@/content/homeContent';
-import HomeSectionScenery from '@/components/home/HomeSectionScenery';
 
 type HowStep = (typeof HOW_STEPS)[number];
 
@@ -56,8 +55,7 @@ export default function HowItWorksSection({ steps }: { steps: readonly HowStep[]
   }, [paused, advance]);
 
   return (
-    <section className="lp-section home-with-scenery" id="how" aria-labelledby="how-heading">
-      <HomeSectionScenery variant="sapphire" />
+    <section className="lp-section" id="how" aria-labelledby="how-heading">
       <div className="container">
         <header className="lp-head">
           <div className="reveal">

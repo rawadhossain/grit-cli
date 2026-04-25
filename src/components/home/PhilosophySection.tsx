@@ -1,9 +1,6 @@
-import HomeSectionScenery from "@/components/home/HomeSectionScenery";
-
 export default function PhilosophySection() {
 	return (
-		<section className="lp-section home-with-scenery" id="friction" aria-labelledby="friction-heading">
-			<HomeSectionScenery variant="amethyst" />
+		<section className="lp-section" id="friction" aria-labelledby="friction-heading">
 			<div className="container">
 				<div className="phil2-statement reveal">
 					<div
