@@ -11,15 +11,29 @@ const SECTION_GROUPS = [
   },
   {
     title: 'Core Workflows',
-    items: ['pausing-and-disabling', 'real-time-file-watcher', 'viewing-your-log'],
+    items: ['pausing-and-disabling', 'real-time-file-watcher', 'viewing-your-log', 'typical-daily-workflow'],
   },
   {
     title: 'Advanced Features',
-    items: ['recording-decisions', 'revert-post-mortems', 'end-of-day-reflection', 'statistics', 'exporting-data'],
+    items: [
+      'recording-decisions',
+      'revert-post-mortems',
+      'end-of-day-reflection',
+      'statistics-and-analytics',
+      'exporting-data',
+      'removing-grít',
+    ],
   },
   {
     title: 'Reference',
-    items: ['configuration', 'database-reference', 'git-hooks-reference', 'answer-tagging', 'complexity-scoring', 'windows-notes'],
+    items: [
+      'configuration-reference',
+      'database-reference',
+      'git-hooks-reference',
+      'answer-tagging',
+      'how-complexity-is-scored',
+      'windows-notes',
+    ],
   },
 ] as const;
 
@@ -47,8 +61,6 @@ export default function DocsSidebar({ sections }: { sections: DocsSection[] }) {
   }, [sections]);
 
   const handleClick = () => setOpen(false);
-
-  const sectionMap = new Map(sections.map(s => [s.id, s.label]));
 
   return (
     <>

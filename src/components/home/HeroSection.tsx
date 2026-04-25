@@ -61,10 +61,10 @@ export default function HeroSection() {
 						</h2>
 
 						<p className="hero-v2-sub">
-							grít hooks into your git workflow and file editor to capture the moments
-							that actually slow you down — the hard decisions, the vague names, the
-							AI-assisted pastes, the reverts — and builds a searchable timeline of
-							your thinking.
+							Grít is a CLI tool that turns your commits into a knowledge base. By
+							introducing small, purposeful friction at the moments that matter - a
+							commit, a dependency, a revert - it captures the thinking behind your
+							code, not just the code itself.
 						</p>
 
 						<div className="hero-v2-trust" aria-label="grít properties">

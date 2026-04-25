@@ -17,12 +17,13 @@ This document is the complete reference for every command, flag, configuration o
 9. [End-of-day reflection](#end-of-day-reflection)
 10. [Statistics and analytics](#statistics-and-analytics)
 11. [Exporting data](#exporting-data)
-12. [Configuration reference](#configuration-reference)
-13. [Database reference](#database-reference)
-14. [Git hooks reference](#git-hooks-reference)
-15. [Answer tagging](#answer-tagging)
-16. [How complexity is scored](#how-complexity-is-scored)
-17. [Windows notes](#windows-notes)
+12. [Removing grít](#removing-grít)
+13. [Configuration reference](#configuration-reference)
+14. [Database reference](#database-reference)
+15. [Git hooks reference](#git-hooks-reference)
+16. [Answer tagging](#answer-tagging)
+17. [How complexity is scored](#how-complexity-is-scored)
+18. [Windows notes](#windows-notes)
 
 ---
 
@@ -88,6 +89,7 @@ grit init
 | `.grit/store.db` | Per-repository SQLite database |
 | `.git/hooks/pre-commit` | Runs `grit commit` before every commit |
 | `.git/hooks/post-rewrite` | Detects revert commits and triggers post-mortems |
+| `.git/hooks/post-commit` | Records the commit SHA against the interview event |
 
 **Idempotency:** safe to run multiple times. If `.grit.yaml` already exists, it is left untouched. If a pre-commit hook already exists, the grít invocation is appended rather than replacing the file.
 
@@ -293,9 +295,24 @@ grit log --since 2025-06-01
 # show only events where you skipped all questions
 grit log --skipped
 
+# look up the friction interview linked to a specific commit
+grit log --commit abc1234
+grit log --commit abc1234def5678   # full or partial hash — prefix match
+
 # combine filters
 grit log --hook interview --since 2025-06-01
 ```
+
+### `--commit` flag
+
+After every successful `git commit`, grít's post-commit hook runs `grit post-commit`, which looks up the most recent interview event and stores the actual commit SHA in the database. This means you can later trace exactly what you were thinking when you made any given commit:
+
+```sh
+git log --oneline          # find the hash of the commit you're curious about
+grit log --commit e3f9a2b  # replay the interview from that commit
+```
+
+Prefix matching is supported — you don't need the full 40-character SHA.
 
 ### Event types
 
@@ -321,12 +338,41 @@ grit decision
 
 Runs a structured 4-question interview to record an architectural decision:
 
-1. **Context** — "What situation or constraint is forcing this decision?"
-2. **Options considered** — "What alternatives did you evaluate? (separate with semicolons)"
-3. **Decision** — "What did you decide, and what was the deciding factor?"
-4. **Consequences** — "What do you give up with this choice? What could go wrong?"
+1. **Context** — What situation or constraint forces this decision?
+2. **Alternatives** — What alternatives did you evaluate?
+3. **Decision** — What did you decide and why?
+4. **Consequences** — What do you give up? What could go wrong?
 
-All four answers are stored together as a single `decision` event.
+Decisions are stored as regular events in the database with hook type `decision`.
+
+### Listing decisions
+
+```sh
+grit decision list
+```
+
+Prints all recorded decisions with their dates and decision title (extracted from the decision answer).
+
+### Exporting to ADR markdown
+
+```sh
+grit decision export
+```
+
+Exports each decision as an ADR (Architecture Decision Record) markdown file:
+
+```
+decisions/
+├── 2025-06-01-use-sqlite-for-local-storage.md
+├── 2025-06-15-cobra-for-cli-framework.md
+└── ...
+```
+
+Each file is formatted with sections:
+- **Context**
+- **Options Considered**
+- **Decision**
+- **Consequences**
 
 ---
 
@@ -375,7 +421,7 @@ Shows your daily stats and asks 2 questions from the reflection pool:
 
 ### Deep reflection export
 
-If `deep_reflect.enabled: true` in `.grit.yaml`, answers are also written to a dated Markdown file:
+If `deep_reflect.enabled: true` in `.grit.yaml`, answers are also written to a dated markdown file:
 
 ```
 .grit/reflections/
@@ -394,21 +440,21 @@ If `deep_reflect.enabled: true` in `.grit.yaml`, answers are also written to a d
 grit stats week
 ```
 
-Show the past 7 days:
-- Total commits, interviews completed vs. skipped
-- Most complex files touched (from `complexity_history`)
-- Top friction tags if tagging is enabled
-- Streak: how many consecutive days had at least one completed interview
+Shows the past 7 days:
+- Total commits and interview completion rate
+- Consecutive days streak
+- Top friction tags with bar chart visualization
+- Most complex files touched (peak complexity scores)
 
 ### File complexity trend
 
 ```sh
-grit stats file <path>
+grit stats file path/to/file.go
 ```
 
-Show one file's history:
-- Complexity trend over time (sparkline)
-- All friction notes recorded while editing this file
+Shows:
+- Sparkline of complexity scores over time for that file
+- All friction answers that mention the file
 
 ### Contribution heatmap
 
@@ -438,7 +484,7 @@ Fri  ░ ░ ░ ▒ ░ ░ ░ ▒ ▒ ░ ░ ░
 grit stats digest
 ```
 
-Groups all friction answers by their `[tag]` prefix. Untagged answers appear under `[general]`.
+Groups all friction answers by their `[tag]` prefix. Untagged answers appear under `[general]`. Useful for identifying recurring themes.
 
 ---
 
@@ -462,6 +508,36 @@ Output is written to `.grit/exports/grit-friction-{period}.{format}`.
 **JSON export:** array of event objects with ISO 8601 timestamps and nested answers.
 
 Default range is the last month if `--since` is not specified.
+
+---
+
+## Removing grít
+
+```sh
+grit remove
+```
+
+Unregisters grít from the repository without destroying your data.
+
+| Command | What it removes |
+|---------|-----------------|
+| `grit remove` | grít entries from all three git hooks, `.grit.yaml` |
+| `grit remove --all` | Everything above **plus** the entire `.grit/` directory (database, exports, reflections) |
+
+### Details
+
+- Hooks are edited surgically — if you have other tools in the same hook file, their logic is preserved
+- If a hook file contained **only** the grít block, the hook file is deleted entirely
+- If grít was never installed (e.g. hook file missing), the command exits cleanly without error
+- `--all` is irreversible: the SQLite database and all exported/reflection files are deleted
+
+```sh
+# remove hooks and config, keep the database
+grit remove
+
+# wipe everything
+grit remove --all
+```
 
 ---
 
@@ -543,7 +619,7 @@ deep_reflect:
 
 ## Database reference
 
-The SQLite database lives at `.grit/store.db` inside each repository. It is opened in WAL mode with a 5-second busy timeout so `grit watch` and `grit commit` can write the DB simultaneously without contention.
+The SQLite database lives at `.grit/store.db` inside each repository. It is opened in WAL mode with a 5-second busy timeout so `grit watch` and `grit commit` can write simultaneously without contention.
 
 ### `events` table
 
@@ -554,6 +630,7 @@ CREATE TABLE events (
     occurred_at    INTEGER NOT NULL,   -- Unix timestamp
     skipped        INTEGER DEFAULT 0,  -- 1 if all questions were skipped/timed out
     commit_msg     TEXT,               -- commit message (commit-time events only)
+    commit_hash    TEXT,               -- full SHA set by the post-commit hook
     related_commit TEXT               -- for revert events: hash of the reverted commit
 );
 ```
@@ -594,6 +671,12 @@ FROM events
 WHERE occurred_at > strftime('%s', 'now', '-7 days')
 ORDER BY occurred_at DESC;
 
+# find the interview for a specific commit hash
+SELECT e.hook, e.commit_msg, a.question, a.answer
+FROM events e
+JOIN answers a ON a.event_id = e.id
+WHERE e.commit_hash LIKE 'abc1234%';
+
 # tag frequency
 SELECT tag, COUNT(*) as n
 FROM answers
@@ -616,7 +699,7 @@ ORDER BY recorded_at;
 
 ```sh
 #!/bin/sh
-if command -v grit >/dev/null 2>&1; then
+if command -v grit > /dev/null 2>&1; then
     grit commit
 fi
 ```
@@ -629,7 +712,7 @@ fi
 
 ```sh
 #!/bin/sh
-if command -v grit >/dev/null 2>&1; then
+if command -v grit > /dev/null 2>&1; then
     grit revert --check "$@"
 fi
 ```
@@ -638,6 +721,19 @@ fi
 - grít inspects the arguments to detect revert commits specifically
 - Silently no-ops for non-revert rewrites
 
+### post-commit
+
+```sh
+#!/bin/sh
+if command -v grit > /dev/null 2>&1; then
+    grit post-commit
+fi
+```
+
+- Runs immediately after every successful commit
+- Reads the commit SHA from `git rev-parse HEAD` and stores it on the most recent interview event
+- This is what makes `grit log --commit <hash>` work
+
 ### Manually installing / repairing hooks
 
 ```sh
@@ -645,7 +741,12 @@ fi
 grit init
 ```
 
-If you need to remove grít from a hook, delete the block between the grít markers in `.git/hooks/pre-commit`.
+To remove grít from your hooks cleanly, use:
+
+```sh
+grit remove          # remove hooks and .grit.yaml, keep the database
+grit remove --all    # remove everything including the .grit folder
+```
 
 ---
 
@@ -726,4 +827,3 @@ grit decision
 # export everything for a retrospective
 grit push --md --since 2025-06-01
 ```
-

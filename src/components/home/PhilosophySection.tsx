@@ -16,9 +16,9 @@ export default function PhilosophySection() {
 						<span className="phil2-accent">Start embracing it.</span>
 					</h2>
 					<p className="phil2-sub">
-						As engineers, we’re obsessed with speed. We automate everything to reach
-						zero friction which often leads to zero reflection. grít turns the "moments
-						of resistance" into your most valuable creative signals.
+						As engineers, we&apos;re obsessed with speed. We automate everything to reach
+						zero friction which often leads to zero reflection. grít turns the
+						&ldquo;moments of resistance&rdquo; into your most valuable creative signals.
 					</p>
 				</div>
 
@@ -30,9 +30,9 @@ export default function PhilosophySection() {
 						</div>
 						<h3>Capture the struggle</h3>
 						<p>
-							The moment you hesitate is the moment you're actually learning. grít
-							captures the "why" behind the hard decisions before the context
-							disappears into the void.
+							The moment you hesitate is the moment you&apos;re actually learning. grít
+							captures the &ldquo;why&rdquo; behind the hard decisions before the
+							context disappears into the void.
 						</p>
 					</div>
 
@@ -44,8 +44,8 @@ export default function PhilosophySection() {
 						<h3>Purposeful Pause</h3>
 						<p>
 							A deliberate prompt after a large AI paste or a 40-minute rabbit hole
-							isn't a hurdle — it's a guardrail that ensures your codebase remains an
-							intentional investment.
+							isn&apos;t a hurdle — it&apos;s a guardrail that ensures your codebase
+							remains an intentional investment.
 						</p>
 					</div>
 
@@ -64,11 +64,12 @@ export default function PhilosophySection() {
 				</div>
 				<div className="phil2-quotes reveal">
 					<blockquote className="phil2-quote">
-						"The best time to document a decision is the moment you're making it."
+						&ldquo;The best time to document a decision is the moment you&apos;re making
+						it.&rdquo;
 					</blockquote>
 					<blockquote className="phil2-quote">
-						"Friction at the right moment is the difference between a commit message and
-						an audit trail."
+						&ldquo;Friction at the right moment is the difference between a commit message
+						and an audit trail.&rdquo;
 					</blockquote>
 				</div>
 			</div>

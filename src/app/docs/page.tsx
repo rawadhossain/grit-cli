@@ -9,7 +9,7 @@ import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import DocsSidebar from "@/components/DocsSidebar";
 import Footer from "@/components/Footer";
-import { slugifyHeading } from "@/lib/slug";
+import { getDocsTocSections } from "@/lib/slug";
 
 export const metadata: Metadata = {
 	title: { absolute: "grit docs" },
@@ -25,15 +25,7 @@ export const metadata: Metadata = {
 export default async function DocsPage() {
 	const mdPath = path.join(process.cwd(), "src", "content", "docs.md");
 	const markdown = await readFile(mdPath, "utf8");
-	const sections = markdown
-		.split("\n")
-		.map((line) => line.match(/^##\s+(.*)\s*$/))
-		.filter(Boolean)
-		.map((m) => {
-			const label = (m as RegExpMatchArray)[1].trim();
-			return { id: slugifyHeading(label), label };
-		})
-		.filter((s) => s.id !== "table-of-contents");
+	const sections = getDocsTocSections(markdown);
 
 	return (
 		<>
