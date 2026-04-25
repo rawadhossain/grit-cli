@@ -38,6 +38,7 @@
 }
 html {
 	scroll-behavior: smooth;
+	overflow-x: hidden;
 }
 body {
 	background:
@@ -116,6 +117,9 @@ pre {
 	transition: all 0.2s ease;
 	border: 1px solid transparent;
 	white-space: nowrap;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .btn:focus-visible {
 	outline: 2px solid var(--accent);
@@ -195,11 +199,19 @@ pre {
 	color: var(--text-muted);
 	font-size: 0.75rem;
 	margin-left: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .terminal-body {
 	padding: 1.25rem 1.5rem;
 	color: #e5e7eb;
 	line-height: 1.6;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+.terminal-body::-webkit-scrollbar {
+	display: none;
 }
 .t-line {
 	margin-bottom: 0.2rem;
@@ -416,6 +428,9 @@ pre {
 	align-items: end;
 	margin-bottom: 3.25rem;
 }
+.lp-head > * {
+	min-width: 0;
+}
 .lp-kicker {
 	display: inline-flex;
 	align-items: center;
@@ -449,6 +464,7 @@ pre {
 	font-size: 1.04rem;
 	line-height: 1.75;
 	max-width: 62ch;
+	width: 100%;
 }
 .lp-sub strong {
 	color: var(--text);
@@ -563,6 +579,9 @@ pre {
 	display: grid;
 	grid-template-columns: repeat(12, 1fr);
 	gap: 1.25rem;
+}
+.steps > * {
+	min-width: 0;
 }
 .stepCard {
 	grid-column: span 4;
@@ -679,6 +698,9 @@ pre {
 	grid-template-columns: 1.2fr 0.8fr;
 	gap: 2rem;
 	align-items: center;
+}
+.ctaInner > * {
+	min-width: 0;
 }
 .ctaTitle {
 	font-size: clamp(1.55rem, 3.2vw, 2.2rem);
@@ -1085,6 +1107,9 @@ pre {
 	grid-template-columns: 1.15fr 0.85fr;
 	gap: 5rem;
 	align-items: center;
+}
+.hero-v2-content > * {
+	min-width: 0;
 }
 .hero-v2-badge {
 	display: inline-flex;
@@ -1584,6 +1609,9 @@ pre {
 	grid-template-columns: repeat(3, 1fr);
 	gap: 1.25rem;
 }
+.phil2-grid > * {
+	min-width: 0;
+}
 .phil2-card {
 	border-radius: 16px;
 	border: 1px solid rgba(255, 255, 255, 0.07);
@@ -1748,6 +1776,9 @@ pre {
 	transition: opacity 280ms ease;
 	pointer-events: none;
 }
+.how2-panel > * {
+	min-width: 0;
+}
 .how2-panel.active {
 	opacity: 1;
 	pointer-events: auto;
@@ -1785,12 +1816,20 @@ pre {
 	font-size: 0.7rem;
 	color: var(--text-muted);
 	margin-left: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .how2-tbody {
 	padding: 1.1rem 1.25rem;
 	font-family: var(--font-mono);
 	font-size: 0.8rem;
 	line-height: 1.85;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+.how2-tbody::-webkit-scrollbar {
+	display: none;
 }
 .how2-tbody .t-cmd {
 	color: var(--accent);
@@ -1995,6 +2034,7 @@ pre {
 	min-height: 2.7rem;
 	display: flex;
 	align-items: center;
+	word-break: break-word;
 }
 .sig-question {
 	margin: 0;
@@ -2035,6 +2075,9 @@ pre {
 	gap: 3rem;
 	align-items: start;
 }
+.qs2-grid > * {
+	min-width: 0;
+}
 .qs2-timeline {
 	position: relative;
 	padding-left: 3rem;
@@ -2059,6 +2102,7 @@ pre {
 }
 .qs2-item {
 	position: relative;
+	min-width: 0;
 }
 .qs2-num {
 	position: absolute;
@@ -2613,27 +2657,159 @@ pre {
 }
 
 /* ════════════════════════════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE — pixel-perfect across all viewports
    ════════════════════════════════════════════════════════════ */
+
+/* ── 1280px: gentle tightening ─────────────────────────────── */
+@media (max-width: 1280px) {
+	.container {
+		padding: 0 2rem;
+	}
+	.hero-v2-content {
+		gap: 3.5rem;
+	}
+	.how2-wrap {
+		max-width: 100%;
+	}
+	.pain-v2-grid {
+		max-width: 100%;
+	}
+	.sig-grid {
+		max-width: 100%;
+	}
+}
+
+/* ── 1024px: tablet landscape ──────────────────────────────── */
 @media (max-width: 1024px) {
-	/* v2 hero + pain */
+	/* ── Hero v2 ── */
+	.hero-v2 {
+		padding-bottom: 5rem;
+	}
 	.hero-v2-content {
 		grid-template-columns: 1fr;
-		gap: 3.5rem;
+		gap: 3rem;
+		text-align: center;
+	}
+	.hero-v2-badge {
+		margin: 0 auto 2rem;
 	}
 	.hero-v2-title {
 		font-size: clamp(2.25rem, 5vw, 3.5rem);
+		align-items: center;
 	}
 	.hero-v2-sub {
-		max-width: 100%;
+		max-width: 56ch;
+		margin-left: auto;
+		margin-right: auto;
 	}
+	.hero-v2-trust {
+		justify-content: center;
+	}
+	.hero-v2-actions {
+		justify-content: center;
+	}
+	.hero-v2-right {
+		max-width: 600px;
+		width: 100%;
+		margin: 0 auto;
+	}
+	.hero-v2-terminal-wrap {
+		max-width: 580px;
+		margin: 0 auto;
+	}
+
+	/* ── Pain v2 ── */
 	.pain-v2-grid {
 		grid-template-columns: repeat(6, minmax(0, 1fr));
 	}
 	.pain-v2-card {
+		grid-column: span 3;
+	}
+
+	/* ── Philosophy v2 ── */
+	.phil2-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+
+	/* ── How It Works ── */
+	.how2-panel {
+		grid-template-columns: 1fr;
+		gap: 1.75rem;
+	}
+	.how2-wrap {
+		max-width: 700px;
+	}
+
+	/* ── Signals ── */
+	.sig-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		max-width: 720px;
+		gap: 0.95rem 1rem;
+	}
+	.sig-card:nth-child(-n + 4),
+	.sig-card:nth-child(n + 5) {
+		grid-column: span 1;
+	}
+	.sig-card:nth-child(7) {
+		grid-column: 1 / -1;
+		max-width: 400px;
+		width: 100%;
+		justify-self: center;
+	}
+
+	/* ── Quickstart ── */
+	.qs2-grid {
+		grid-template-columns: 1fr;
+		gap: 2.5rem;
+	}
+	.qs2-aside {
+		position: static;
+	}
+
+	/* ── lp-head ── */
+	.lp-head {
+		grid-template-columns: 1fr;
+		gap: 1.25rem;
+		align-items: start;
+	}
+
+	/* ── Star CTA ── */
+	.ctaInner {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+	.ctaAside {
+		justify-content: flex-start;
+	}
+
+	/* ── Bento ── */
+	.bento-card {
 		grid-column: span 6;
 	}
-	/* legacy hero */
+	.bento-card--wide {
+		grid-column: span 12;
+	}
+	.surface {
+		grid-column: span 12;
+	}
+	.steps .stepCard {
+		grid-column: span 6;
+	}
+	.qsCard {
+		grid-column: span 12;
+	}
+
+	/* ── Docs ── */
+	.docs-shell {
+		grid-template-columns: 240px 1fr;
+	}
+	.docs-main-wrap {
+		padding-left: 2.5rem;
+		padding-right: 2.5rem;
+	}
+
+	/* ── legacy hero ── */
 	.hero-content {
 		grid-template-columns: 1fr;
 		text-align: center;
@@ -2659,65 +2835,111 @@ pre {
 		grid-template-columns: 1fr;
 		gap: 3.5rem;
 	}
-	.lp-head {
-		grid-template-columns: 1fr;
-		gap: 1.25rem;
-		align-items: start;
+}
+
+/* ── 900px: nav collapses ──────────────────────────────────── */
+@media (max-width: 900px) {
+	.lp-section {
+		padding: 5.5rem 0;
 	}
-	.bento-card {
-		grid-column: span 6;
+	.pain-v2 {
+		padding: 6rem 0;
 	}
-	.surface {
-		grid-column: span 12;
+}
+
+/* ── 768px: tablet portrait ────────────────────────────────── */
+@media (max-width: 768px) {
+	/* ── Spacing ── */
+	.container {
+		padding: 0 1.5rem;
 	}
-	.steps .stepCard {
-		grid-column: span 6;
+	.lp-section {
+		padding: 4.5rem 0;
 	}
-	.qsCard {
-		grid-column: span 12;
+	.pain-v2 {
+		padding: 5rem 0;
 	}
-	.docs-shell {
-		grid-template-columns: 240px 1fr;
+
+	/* ── Pain v2: 2-col → each card full-width ── */
+	.pain-v2-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
-	.docs-main-wrap {
-		padding-left: 2.5rem;
-		padding-right: 2.5rem;
+	.pain-v2-card {
+		grid-column: span 1;
 	}
-	/* v2 responsive */
+	.pain-v2-header {
+		margin-bottom: 3.5rem;
+	}
+
+	/* ── Philosophy ── */
 	.phil2-grid {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr;
+	}
+	.phil2-statement {
+		margin-bottom: 2.5rem;
+	}
+
+	/* ── How It Works tabs ── */
+	.how2-wrap {
+		max-width: 100%;
 	}
 	.how2-panel {
-		grid-template-columns: 1fr;
+		gap: 1.5rem;
 	}
-	.qs2-grid {
-		grid-template-columns: 1fr;
+	.how2-tablist {
+		flex-wrap: nowrap;
+		overflow-x: auto;
 	}
-	.qs2-aside {
-		position: static;
+
+	/* ── Features marquee ── */
+	.marquee-card {
+		width: 250px;
 	}
-	/* Signals: 2 equal columns, last card centered (no 4+3 on narrow) */
+
+	/* ── Signals ── */
 	.sig-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		max-width: 720px;
-		gap: 0.95rem 1rem;
+		grid-template-columns: 1fr;
+		max-width: none;
 	}
 	.sig-card:nth-child(-n + 4),
 	.sig-card:nth-child(n + 5) {
 		grid-column: span 1;
 	}
 	.sig-card:nth-child(7) {
-		grid-column: 1 / -1;
-		max-width: 400px;
-		width: 100%;
-		justify-self: center;
+		grid-column: auto;
+		max-width: none;
+		justify-self: stretch;
 	}
-}
 
-@media (max-width: 768px) {
-	.lp-section {
-		padding: 5rem 0;
+	/* ── Quickstart ── */
+	.qs2-timeline {
+		padding-left: 2.5rem;
+		gap: 2rem;
 	}
+	.qs2-num {
+		left: -2.5rem;
+	}
+	.qs2-code {
+		font-size: 0.75rem;
+	}
+	.qs2-aside-card {
+		padding: 1.25rem;
+	}
+
+	/* ── Star CTA ── */
+	.ctaShell {
+		padding: 1.75rem;
+	}
+	.ctaTitle {
+		font-size: clamp(1.35rem, 4vw, 1.8rem);
+	}
+	.ctaAside {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+	}
+
+	/* ── Bento ── */
 	.bento-card {
 		grid-column: span 12;
 	}
@@ -2727,12 +2949,8 @@ pre {
 	.steps .stepCard {
 		grid-column: span 12;
 	}
-	.ctaInner {
-		grid-template-columns: 1fr;
-	}
-	.ctaAside {
-		justify-content: flex-start;
-	}
+
+	/* ── Docs ── */
 	.docs-shell {
 		grid-template-columns: 1fr;
 		padding-left: 1.5rem;
@@ -2762,85 +2980,319 @@ pre {
 	.docs-breadcrumb {
 		margin-bottom: 1.75rem;
 	}
-	/* v2 responsive */
-	.phil2-grid {
-		grid-template-columns: 1fr;
-	}
-	.how2-panel {
-		gap: 1.5rem;
-	}
-	/* Signals: one column, equal full-width cards */
-	.sig-grid {
-		grid-template-columns: 1fr;
-		max-width: none;
-	}
-	.sig-card:nth-child(7) {
-		grid-column: auto;
-		max-width: none;
-		justify-self: stretch;
-	}
 }
 
-@media (max-width: 480px) {
-	.container {
-		padding: 0 1rem;
-	}
-	/* v2 hero + pain */
+/* ── 600px: large phone ─────────────────────────────────────── */
+@media (max-width: 600px) {
+	/* ── Hero v2 ── */
 	.hero-v2 {
-		padding: calc(0.5rem + 52px + 1.5rem) 0 4.5rem;
+		padding: calc(0.5rem + 52px + 1.75rem) 0 4rem;
+		min-height: auto;
 	}
 	.hero-v2-content {
 		gap: 2.5rem;
 	}
 	.hero-v2-title {
-		font-size: 2.25rem;
+		font-size: clamp(2rem, 8vw, 2.75rem);
 	}
 	.hero-v2-sub {
-		font-size: 0.95rem;
+		font-size: 0.97rem;
+		max-width: 100%;
 	}
 	.hero-v2-trust {
-		gap: 0.75rem;
+		gap: 0.65rem;
 	}
 	.hero-v2-trust-item {
-		font-size: 0.72rem;
-		padding: 0.4rem 0.7rem;
+		font-size: 0.74rem;
+		padding: 0.45rem 0.75rem;
 	}
 	.hero-v2-actions {
 		flex-direction: column;
 		width: 100%;
+		align-items: stretch;
 	}
 	.hero-v2-btn {
 		width: 100%;
 		justify-content: center;
 	}
+	.hero-v2-badge {
+		font-size: 0.68rem;
+	}
+
+	/* ── Pain v2 ── */
 	.pain-v2 {
-		padding: 5rem 0;
-	}
-	.pain-v2-header {
-		margin-bottom: 3.5rem;
-	}
-	.pain-v2-title {
-		font-size: 1.95rem;
-	}
-	.pain-v2-sub {
-		font-size: 0.92rem;
+		padding: 4rem 0;
 	}
 	.pain-v2-grid {
-		gap: 1rem;
+		grid-template-columns: 1fr;
+		gap: 0.9rem;
 	}
-	/* legacy hero */
+	.pain-v2-card {
+		grid-column: span 1;
+	}
+	.pain-v2-title {
+		font-size: clamp(1.75rem, 6vw, 2.5rem);
+	}
+
+	/* ── Section headings ── */
+	.lp-title {
+		font-size: clamp(1.7rem, 6vw, 2.25rem);
+	}
+	.lp-section {
+		padding: 4rem 0;
+	}
+
+	/* ── Philosophy ── */
+	.phil2-headline {
+		font-size: clamp(1.65rem, 5.5vw, 2.25rem);
+	}
+
+	/* ── How It Works tabs ── */
+	.how2-tab {
+		padding: 0.75rem 1rem;
+		font-size: 0.82rem;
+	}
+	.how2-tab-num {
+		display: none;
+	}
+	.how2-tablist {
+		border-radius: 8px 8px 0 0;
+	}
+	.how2-desc-title {
+		font-size: 1.05rem;
+	}
+
+	/* ── Quickstart ── */
+	.qs2-timeline {
+		padding-left: 2.25rem;
+	}
+	.qs2-timeline::before {
+		left: 0.75rem;
+	}
+	.qs2-num {
+		left: -2.25rem;
+		width: 1.6rem;
+		height: 1.6rem;
+		font-size: 0.6rem;
+	}
+	.qs2-code {
+		font-size: 0.72rem;
+		padding: 0.75rem 0.85rem;
+	}
+
+	/* ── Star CTA ── */
+	.ctaShell {
+		padding: 1.5rem;
+		border-radius: 16px;
+	}
+	.ctaAside {
+		flex-direction: column;
+	}
+	.ctaAside .btn {
+		width: 100%;
+		justify-content: center;
+	}
+
+	/* ── lp-head sub ── */
+	.lp-sub {
+		font-size: 0.95rem;
+	}
+
+	/* ── Marquee ── */
+	.marquee-card {
+		width: 225px;
+	}
+	.marquee-shell {
+		mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+		-webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+	}
+
+	/* ── Docs ── */
+	.docs-shell {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+	.docs-main-wrap {
+		padding-bottom: 3rem;
+	}
+}
+
+/* ── 480px: small phone ─────────────────────────────────────── */
+@media (max-width: 480px) {
+	.container {
+		padding: 0 1rem;
+	}
+
+	/* ── Hero v2 ── */
+	.hero-v2 {
+		padding: calc(0.5rem + 52px + 1.5rem) 0 3.5rem;
+	}
+	.hero-v2-title {
+		font-size: 2rem;
+		letter-spacing: -0.03em;
+	}
+	.hero-v2-sub {
+		font-size: 0.9rem;
+	}
+	.hero-v2-trust {
+		gap: 0.55rem;
+	}
+	.hero-v2-trust-item {
+		font-size: 0.7rem;
+		padding: 0.4rem 0.65rem;
+	}
+
+	/* ── Pain v2 ── */
+	.pain-v2 {
+		padding: 3.5rem 0;
+	}
+	.pain-v2-title {
+		font-size: 1.75rem;
+	}
+	.pain-v2-sub {
+		font-size: 0.9rem;
+	}
+	.pain-v2-card {
+		padding: 1.4rem 1.25rem 1.5rem;
+	}
+	.pain-v2-num {
+		font-size: 1.8rem;
+	}
+
+	/* ── lp shared ── */
+	.lp-section {
+		padding: 3.5rem 0;
+	}
+	.lp-title {
+		font-size: 1.65rem;
+	}
+	.lp-sub {
+		font-size: 0.9rem;
+	}
+	.lp-kicker {
+		font-size: 0.68rem;
+	}
+
+	/* ── Philosophy ── */
+	.phil2-headline {
+		font-size: 1.6rem;
+	}
+	.phil2-sub {
+		font-size: 0.9rem;
+	}
+	.phil2-card {
+		padding: 1.4rem;
+	}
+
+	/* ── How It Works ── */
+	.how2-tab {
+		padding: 0.65rem 0.85rem;
+		font-size: 0.78rem;
+	}
+	.how2-panels {
+		margin-top: 1.5rem;
+	}
+	.how2-terminal {
+		display: none;
+	}
+	.how2-panel {
+		grid-template-columns: 1fr;
+	}
+
+	/* ── Signals ── */
+	.sig-card {
+		padding: 1.1rem 1rem 1.15rem;
+	}
+	.sig-question {
+		font-size: 0.84rem;
+	}
+
+	/* ── Quickstart ── */
+	.qs2-timeline {
+		padding-left: 2rem;
+	}
+	.qs2-timeline::before {
+		left: 0.6rem;
+	}
+	.qs2-num {
+		left: -2rem;
+		width: 1.45rem;
+		height: 1.45rem;
+		font-size: 0.58rem;
+	}
+	.qs2-item-title {
+		font-size: 0.92rem;
+	}
+	.qs2-code {
+		font-size: 0.68rem;
+	}
+	.qs2-aside-card {
+		padding: 1.1rem;
+		border-radius: 12px;
+	}
+	.qs2-aside-actions .btn {
+		font-size: 0.875rem;
+		padding: 0.6rem 1rem;
+	}
+
+	/* ── Star CTA ── */
+	.ctaShell {
+		padding: 1.25rem;
+		border-radius: 14px;
+	}
+	.ctaTitle {
+		font-size: 1.35rem;
+		margin-bottom: 0.65rem;
+	}
+
+	/* ── Marquee ── */
+	.marquee-card {
+		width: 210px;
+		padding: 1.1rem;
+	}
+
+	/* ── legacy hero ── */
 	.hero {
 		padding: calc(var(--nav-h) + 3rem) 0 4rem;
 	}
 	.hero-title {
 		font-size: 2.25rem;
 	}
+}
+
+/* ── 360px: very small phone ───────────────────────────────── */
+@media (max-width: 360px) {
+	.container {
+		padding: 0 0.875rem;
+	}
+	.hero-v2-title {
+		font-size: 1.75rem;
+	}
+	.hero-v2-trust {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 	.lp-title {
-		font-size: 1.95rem;
+		font-size: 1.5rem;
+	}
+	.pain-v2-title {
+		font-size: 1.55rem;
+	}
+	.phil2-headline {
+		font-size: 1.45rem;
 	}
 	.how2-tab {
-		padding: 0.75rem 1rem;
-		font-size: 0.82rem;
+		padding: 0.6rem 0.7rem;
+		font-size: 0.74rem;
+	}
+	.marquee-card {
+		width: 190px;
+	}
+	.ctaTitle {
+		font-size: 1.2rem;
+	}
+	.qs2-code {
+		font-size: 0.62rem;
 	}
 }
 
@@ -2861,4 +3313,14 @@ pre {
 		opacity: 1;
 		transform: none;
 	}
+	.marquee-track {
+		animation: none;
+	}
+	.how2-tab-ind,
+	.how2-tab,
+	.how2-tab::before,
+	.how2-panel {
+		transition: none;
+	}
 }
+
