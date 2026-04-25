@@ -91,9 +91,14 @@ function useGritInstallRecommend() {
 					return () => {};
 				}
 				queueMicrotask(() => {
-					store.current.platform = detectGritInstallPlatform();
-					store.current.v = 1;
-					onChange();
+					void (async () => {
+						try {
+							store.current.platform = await detectGritInstallPlatform();
+						} finally {
+							store.current.v = 1;
+							onChange();
+						}
+					})();
 				});
 				return () => {};
 			},
