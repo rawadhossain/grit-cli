@@ -1,7 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import {
+	useCallback,
+	useEffect,
+	useId,
+	useRef,
+	useState,
+	useSyncExternalStore,
+} from "react";
 import {
 	detectGritInstallPlatform,
 	GRIT_INSTALL_ROWS,
@@ -71,18 +77,46 @@ function DownloadGlyph() {
 	);
 }
 
+/**
+ * Resolves the suggested platform on the client without setState in an effect.
+ * First snapshot matches SSR (null); after a microtask we read `navigator` and re-render.
+ */
+function useGritInstallRecommend() {
+	const store = useRef({ v: 0, platform: null as GritInstallPlatformId | null });
+
+	return useSyncExternalStore(
+		useCallback(
+			(onChange) => {
+				if (typeof window === "undefined") {
+					return () => {};
+				}
+				queueMicrotask(() => {
+					store.current.platform = detectGritInstallPlatform();
+					store.current.v = 1;
+					onChange();
+				});
+				return () => {};
+			},
+			[]
+		),
+		useCallback(() => {
+			if (store.current.v === 0) {
+				return null;
+			}
+			return store.current.platform;
+		}, []),
+		() => null
+	);
+}
+
 export default function HeroInstallDropdown() {
 	const [open, setOpen] = useState(false);
-	const [recommend, setRecommend] = useState<GritInstallPlatformId | null>(null);
+	const recommend = useGritInstallRecommend();
 	const wrapRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const id = useId();
 	const regionId = `${id}-region`;
 	const labelId = `${id}-label`;
-
-	useLayoutEffect(() => {
-		setRecommend(detectGritInstallPlatform());
-	}, []);
 
 	const close = useCallback(() => setOpen(false), []);
 
