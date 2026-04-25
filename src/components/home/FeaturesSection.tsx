@@ -1,3 +1,5 @@
+import HomeSectionScenery from "@/components/home/HomeSectionScenery";
+
 type Feature = {
   id: string;
   title: string;
@@ -11,7 +13,8 @@ export default function FeaturesSection({ items }: { items: readonly Feature[] }
   const doubled = [...items, ...items];
 
   return (
-    <section className="lp-section" id="features" aria-labelledby="features-heading">
+    <section className="lp-section home-with-scenery" id="features" aria-labelledby="features-heading">
+      <HomeSectionScenery variant="emerald" />
       <div className="container">
         <header className="lp-head">
           <div className="reveal">
