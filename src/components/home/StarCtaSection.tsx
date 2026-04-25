@@ -42,14 +42,14 @@ export default function StarCtaSection() {
 								</svg>
 								Star on GitHub
 							</a>
-							<a
+							{/* <a
 								href="https://github.com/AlchemistReturns/grit"
 								className="btn btn--ghost"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
 								View repo ↗
-							</a>
+							</a> */}
 						</div>
 					</div>
 				</div>
