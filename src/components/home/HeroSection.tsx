@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import HeroInstallDropdown from "@/components/home/HeroInstallDropdown";
 import TerminalDemo from "@/components/TerminalDemo";
 
@@ -18,7 +18,9 @@ export default function HeroSection() {
 		};
 
 		window.addEventListener("mousemove", onMove);
-		return () => window.removeEventListener("mousemove", onMove);
+		return () => {
+			window.removeEventListener("mousemove", onMove);
+		};
 	}, []);
 
 	return (
@@ -127,24 +129,30 @@ export default function HeroSection() {
 
 						<div className="hero-v2-actions">
 							<HeroInstallDropdown />
-							<a href="/docs" className="hero-v2-btn hero-v2-btn--ghost">
-								<span>Read the docs</span>
-								<svg
-									width="16"
-									height="16"
-									viewBox="0 0 16 16"
-									fill="none"
-									aria-hidden="true"
+							<div className="hero-docs-wrapper">
+								<a
+									href="/docs"
+									className="hero-v2-btn hero-v2-btn--ghost hero-docs-btn"
 								>
-									<path
-										d="M6 3L11 8L6 13"
-										stroke="currentColor"
-										strokeWidth="2"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							</a>
+									<span>Read the docs</span>
+									<svg
+										width="16"
+										height="16"
+										viewBox="0 0 16 16"
+										fill="none"
+										aria-hidden="true"
+									>
+										<path
+											d="M6 3L11 8L6 13"
+											stroke="currentColor"
+											strokeWidth="2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								</a>
+								<DocsPreview />
+							</div>
 						</div>
 					</div>
 
@@ -157,5 +165,32 @@ export default function HeroSection() {
 				</div>
 			</div>
 		</section>
+	);
+}
+
+function DocsPreview() {
+	const isDesktop = useSyncExternalStore(
+		(callback) => {
+			if (typeof window === "undefined") return () => {};
+			window.addEventListener("resize", callback);
+			return () => window.removeEventListener("resize", callback);
+		},
+		() => window.innerWidth > 900,
+		() => false,
+	);
+
+	if (!isDesktop) return null;
+
+	return (
+		<div className="hero-docs-preview" aria-hidden="true">
+			<div className="hero-docs-preview-inner">
+				<iframe
+					src="/docs"
+					title="Docs Preview"
+					tabIndex={-1}
+					className="hero-docs-iframe"
+				/>
+			</div>
+		</div>
 	);
 }

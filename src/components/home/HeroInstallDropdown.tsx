@@ -1,13 +1,6 @@
 "use client";
 
-import {
-	useCallback,
-	useEffect,
-	useId,
-	useRef,
-	useState,
-	useSyncExternalStore,
-} from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import {
 	detectGritInstallPlatform,
 	GRIT_INSTALL_ROWS,
@@ -85,45 +78,75 @@ function useGritInstallRecommend() {
 	const store = useRef({ v: 0, platform: null as GritInstallPlatformId | null });
 
 	return useSyncExternalStore(
-		useCallback(
-			(onChange) => {
-				if (typeof window === "undefined") {
-					return () => {};
-				}
-				queueMicrotask(() => {
-					void (async () => {
-						try {
-							store.current.platform = await detectGritInstallPlatform();
-						} finally {
-							store.current.v = 1;
-							onChange();
-						}
-					})();
-				});
+		useCallback((onChange) => {
+			if (typeof window === "undefined") {
 				return () => {};
-			},
-			[]
-		),
+			}
+			queueMicrotask(() => {
+				void (async () => {
+					try {
+						store.current.platform = await detectGritInstallPlatform();
+					} finally {
+						store.current.v = 1;
+						onChange();
+					}
+				})();
+			});
+			return () => {};
+		}, []),
 		useCallback(() => {
 			if (store.current.v === 0) {
 				return null;
 			}
 			return store.current.platform;
 		}, []),
-		() => null
+		() => null,
 	);
 }
 
 export default function HeroInstallDropdown() {
 	const [open, setOpen] = useState(false);
+	const canHover = useSyncExternalStore(
+		(callback) => {
+			if (typeof window === "undefined") return () => {};
+			const mql = window.matchMedia("(hover: hover)");
+			mql.addEventListener("change", callback);
+			return () => mql.removeEventListener("change", callback);
+		},
+		() => window.matchMedia("(hover: hover)").matches,
+		() => false, // Server fallback
+	);
 	const recommend = useGritInstallRecommend();
 	const wrapRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
+	const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const id = useId();
 	const regionId = `${id}-region`;
 	const labelId = `${id}-label`;
 
 	const close = useCallback(() => setOpen(false), []);
+
+	const handleMouseEnter = useCallback(() => {
+		if (!canHover) return;
+		if (hoverTimeoutRef.current) {
+			clearTimeout(hoverTimeoutRef.current);
+			hoverTimeoutRef.current = null;
+		}
+		setOpen(true);
+	}, [canHover]);
+
+	const handleMouseLeave = useCallback(() => {
+		if (!canHover) return;
+		hoverTimeoutRef.current = setTimeout(() => {
+			setOpen(false);
+		}, 250); // 250ms grace period
+	}, [canHover]);
+
+	useEffect(() => {
+		return () => {
+			if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (!open) return;
@@ -148,7 +171,12 @@ export default function HeroInstallDropdown() {
 	}, [open, close]);
 
 	return (
-		<div ref={wrapRef} className="hero-v2-install">
+		<div
+			ref={wrapRef}
+			className="hero-v2-install"
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
+		>
 			<button
 				ref={triggerRef}
 				type="button"

@@ -30,6 +30,7 @@ export default function Footer() {
             <div className={styles.col}>
               <h4 className={styles.colTitle}>Project</h4>
               <a href="https://github.com/AlchemistReturns/grit"          className={styles.link} target="_blank" rel="noopener noreferrer" id="footer-github">GitHub ↗</a>
+              <a href="https://github.com/rawadhossain/grit-cli/"          className={styles.link} target="_blank" rel="noopener noreferrer" id="footer-site-github">Website Repo ↗</a>
               <a href="https://github.com/AlchemistReturns/grit/releases" className={styles.link} target="_blank" rel="noopener noreferrer" id="footer-releases">Releases ↗</a>
               <a href="https://github.com/AlchemistReturns/grit/issues"   className={styles.link} target="_blank" rel="noopener noreferrer" id="footer-issues">Issues ↗</a>
             </div>

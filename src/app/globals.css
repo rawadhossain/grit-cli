@@ -50,7 +50,10 @@ body {
 	font-family: var(--font-sans);
 	line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
+	position: relative;
+	overflow-x: hidden;
 }
+
 a {
 	color: inherit;
 	text-decoration: none;
@@ -403,30 +406,11 @@ pre {
 .home-continuum__grid {
 	position: absolute;
 	inset: 0;
-	background-size: 44px 44px;
 	background-image:
-		linear-gradient(to right, rgba(74, 222, 128, 0.036) 1px, transparent 1px),
+		linear-gradient(to right, rgba(74, 222, 128, 0.03) 1px, transparent 1px),
 		linear-gradient(to bottom, rgba(74, 222, 128, 0.03) 1px, transparent 1px);
-	/* One long vertical mask for the full scroll strip — not re-centered on every section. */
-	mask-image: linear-gradient(
-		180deg,
-		transparent 0%,
-		rgb(0 0 0 / 0.55) 0.4rem,
-		#000 1.5rem,
-		#000 calc(100% - 1.5rem),
-		rgb(0 0 0 / 0.55) calc(100% - 0.4rem),
-		transparent 100%
-	);
-	-webkit-mask-image: linear-gradient(
-		180deg,
-		transparent 0%,
-		rgb(0 0 0 / 0.55) 0.4rem,
-		#000 1.5rem,
-		#000 calc(100% - 1.5rem),
-		rgb(0 0 0 / 0.55) calc(100% - 0.4rem),
-		transparent 100%
-	);
-	opacity: 0.9;
+	background-size: 48px 48px;
+	mask-image: radial-gradient(ellipse 85% 70% at 50% 45%, black 20%, transparent 75%);
 	animation: homeSceneryGridDrift 36s ease-in-out infinite;
 }
 @keyframes homeSceneryGridDrift {
@@ -1086,12 +1070,14 @@ pre {
 	overflow: visible;
 	z-index: 1;
 }
+
 .hero-v2-bg {
 	position: absolute;
 	inset: 0;
 	z-index: 0;
 	overflow: hidden;
 }
+/* Reusable orbs are handled by body bg now */
 .hero-v2-grid {
 	position: absolute;
 	inset: 0;
@@ -1452,6 +1438,81 @@ pre {
 	outline-offset: 3px;
 }
 
+/* Docs Preview Hover - Actual Iframe Miniature */
+.hero-docs-wrapper {
+	position: relative;
+	display: inline-block;
+}
+.hero-docs-preview {
+	position: absolute;
+	left: calc(100% + 1.5rem);
+	top: 35%;
+	transform: translateY(-50%) translateX(-15px) scale(0.95);
+	width: 380px;
+	height: 260px;
+	pointer-events: none;
+	opacity: 0;
+	z-index: 50;
+	transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+	filter: blur(8px);
+	transform-origin: left center;
+}
+@media (max-width: 900px) {
+	.hero-docs-preview {
+		display: none !important;
+	}
+}
+.hero-docs-wrapper:hover .hero-docs-preview {
+	opacity: 1;
+	transform: translateY(-50%) translateX(0) scale(1);
+	filter: blur(0);
+}
+
+.nav-docs-wrapper {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+}
+
+.hero-docs-preview--nav {
+	left: 50% !important;
+	top: calc(100% + 1.25rem) !important;
+	transform: translateX(-50%) translateY(10px) scale(0.9) !important;
+	transform-origin: top center !important;
+}
+
+.nav-docs-wrapper:hover .hero-docs-preview--nav {
+	opacity: 1 !important;
+	transform: translateX(-50%) translateY(0) scale(1) !important;
+	filter: blur(0) !important;
+}
+
+.hero-docs-preview-inner {
+	position: relative;
+	width: 1520px; /* 4x scale */
+	height: 1040px; /* 4x scale */
+	transform: scale(0.25);
+	transform-origin: top left;
+	background: var(--bg);
+	border: 4px solid rgba(255, 255, 255, 0.15);
+	border-radius: 48px; /* 12px visually */
+	overflow: hidden;
+	box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+	background: #0a0a0a; /* Fallback dark background */
+}
+.hero-docs-iframe {
+	width: calc(100% + 30px); /* Push scrollbar off-screen */
+	height: 100%;
+	border: none;
+	pointer-events: none;
+	background: #0a0a0a;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+.hero-docs-iframe::-webkit-scrollbar {
+	display: none;
+}
+
 /* Install dropdown: matches hero primary, glass menu
    (Do not use flex-grow here — it stretches the CTA group and shoves the ghost button to the far edge.) */
 .hero-v2-install {
@@ -1488,19 +1549,12 @@ pre {
 .hero-v2-install-panel {
 	position: absolute;
 	z-index: 100;
-	top: calc(100% + 0.5rem);
-	left: 0;
-	/* Slightly wider than the trigger for comfortable rows; not forced to the full CTA row width. */
+	bottom: calc(100% + 0.5rem);
+	left: 50%;
+	transform: translateX(-50%);
 	width: min(20rem, calc(100vw - 2.5rem));
 	max-width: none;
 	pointer-events: none;
-}
-@media (min-width: 601px) {
-	.hero-v2-install-panel {
-		left: 50%;
-		right: auto;
-		transform: translateX(-50%);
-	}
 }
 .hero-v2-install-panel[data-state="open"] {
 	pointer-events: auto;
@@ -1527,13 +1581,13 @@ pre {
 		0 0 40px rgba(34, 197, 94, 0.12);
 	backdrop-filter: blur(20px) saturate(140%);
 	-webkit-backdrop-filter: blur(20px) saturate(140%);
-	transform-origin: 50% 0;
+	transform-origin: 50% 100%;
 	animation: heroInstallPanelIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 @keyframes heroInstallPanelIn {
 	from {
 		opacity: 0;
-		transform: translateY(-0.4rem) scale(0.98);
+		transform: translateY(0.4rem) scale(0.98);
 		filter: blur(2px);
 	}
 	to {
@@ -2571,6 +2625,10 @@ pre {
 	position: relative;
 }
 
+.docs-grid-bg {
+	display: none;
+}
+
 /* ── SIDEBAR ──────────────────────────────────────────────── */
 .docs-nav {
 	position: sticky;
@@ -2579,8 +2637,8 @@ pre {
 	align-self: start;
 	overflow-y: auto;
 	padding: 2.5rem 0 2.5rem 2rem;
-	border-right: 1px solid rgba(255, 255, 255, 0.06);
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, transparent 100%);
+	border-right: none;
+	background: transparent;
 	scrollbar-width: thin;
 	scrollbar-color: rgba(74, 222, 128, 0.2) transparent;
 }

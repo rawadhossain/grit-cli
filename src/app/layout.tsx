@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,6 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+	metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://grit-cli.vercel.app"),
 	title: {
 		default: "grít",
 		template: "%s — grít",
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
 		"developer tools",
 		"CLI",
 		"friction logger",
+		"google analytics integration",
 	],
 	openGraph: {
 		siteName: "grít",
@@ -40,8 +43,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-			<body>{children}</body>
+		<html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} data-scroll-behavior="smooth">
+			<body>
+				{children}
+				{process.env.NEXT_PUBLIC_GA_ID && (
+					<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+				)}
+			</body>
 		</html>
 	);
 }

@@ -60,6 +60,19 @@ export default function DocsSidebar({ sections }: { sections: DocsSection[] }) {
     return () => obs.disconnect();
   }, [sections]);
 
+  // Auto-scroll sidebar to keep active link in view
+  useEffect(() => {
+    if (active) {
+      const activeLink = document.querySelector('.docs-nav-link--active');
+      if (activeLink) {
+        activeLink.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+        });
+      }
+    }
+  }, [active]);
+
   const handleClick = () => setOpen(false);
 
   return (
